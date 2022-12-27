@@ -323,13 +323,13 @@ export default function Index() {
           onScan={handleScanWebCam}
           onResult={(result, error) => {
             alert("QR result:" + result?.text);
-            if (!!result) {
-              setQRData(result?.text);
-              router.push(result?.text);
-            }
-            if (!!error) {
-              console.info(error);
-            }
+            router.push(result?.text);
+            // if (!!result) {
+            //   setQRData(result?.text);
+            // }
+            // if (!!error) {
+            //   console.info(error);
+            // }
           }}
         />}
         {/* {isShown && <BgBlueButton className="w-[200px]"  variant="contained" content="open file" onClick={onScanFile}/>} */}
