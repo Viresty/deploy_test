@@ -314,13 +314,11 @@ export default function Index() {
         {/* {isShown && <QrReader className="h-[120px]"     
         />} */}
 
-        {1 && <QrReader
+        {isShown && <QrReader
           //  ref={qrRef}
           delay={300}
           style={{ width: '180px' }}
-          constraints={{
-            facingMode: 'environment'
-          }}
+          constraints={ {facingMode: 'environment'} }
           onError={handleErrorWebCam}
           onScan={handleScanWebCam}
           onResult={(result, error) => {
