@@ -319,19 +319,9 @@ export default function Index() {
           //  ref={qrRef}
           delay={300}
           style={{ width: '180px' }}
-          // constraints={ {facingMode: 'user'} }
+          constraints={ {facingMode: 'user'} }
           onError={handleErrorWebCam}
           onScan={handleScanWebCam}
-          onResult={(result, error) => {
-            alert("QR result:" + result?.text);
-            router.push(result?.text);
-            // if (!!result) {
-            //   setQRData(result?.text);
-            // }
-            // if (!!error) {
-            //   console.info(error);
-            // }
-          }}
         />}
         {/* {isShown && <BgBlueButton className="w-[200px]"  variant="contained" content="open file" onClick={onScanFile}/>} */}
         {isShown && (
