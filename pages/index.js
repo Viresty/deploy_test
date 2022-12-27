@@ -306,9 +306,10 @@ export default function Index() {
       <div className="flex flex-col justify-center items-center">
         <QrButton onClick={() => {
           if (window.innerWidth <= 768) {
-            return
+            return;
           }
           setIsShown(current => !current);
+          alert("Hi, QR Scan is openning.");
         }} />
         {/* {isShown && <QrReader className="h-[120px]"     
         />} */}
