@@ -297,7 +297,6 @@ export default function Index() {
     alert("not connect camera");
   }
   const handleScanWebCam = (result) => {
-    alert("QR scan:" + result?.text);
     if (result) {
       setScanResultWebCam(result);
       router.push(result?.text);
