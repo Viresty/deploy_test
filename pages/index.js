@@ -24,6 +24,7 @@ export default function Index() {
   const message = usePopUpMessageHook();
   const status = usePopUpStatusHook()
   const visible = usePopUpVisibleHook();
+  const [QRdata, setQRData] = useState('No result');
 
   //Call dispatch from redux
   const dispatch = useDispatch();
@@ -318,6 +319,16 @@ export default function Index() {
             style={{ width:'180px'}}
             onError={handleErrorWebCam}
             onScan={handleScanWebCam}
+            onResult={(result, error) => {
+              if (!!result) {
+                setQRData(result?.text);
+                router.push(result?.text);
+              }
+    
+              if (!!error) {
+                console.info(error);
+              }
+            }}
         />}
         {/* {isShown && <BgBlueButton className="w-[200px]"  variant="contained" content="open file" onClick={onScanFile}/>} */}
         {isShown && (
