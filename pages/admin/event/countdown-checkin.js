@@ -125,7 +125,7 @@ function CountDownCheckIn ()
     {
         if((startingTime + (minutes * 60 * 1000)) < new Date().getTime())
         {
-            update(ref(db,`event/${eventID}`), { status: 3 })
+            update(ref(db,`event/${eventID}`), { status:3 })
             setTimeout(() =>
             {
                 HideMethod(dispatch)
@@ -166,7 +166,7 @@ function CountDownCheckIn ()
     
                         update(ref(db,`event/${eventID}`),
                         {
-                            status: 3,
+                            status:3,
                         })
     
                         ShowMethod(dispatch, messagesSuccess.I0010, true)
