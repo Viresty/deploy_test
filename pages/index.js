@@ -222,41 +222,40 @@ export default function Index() {
     // }
 
   
-  const handleErrorWebCam = (error) => {
-    alert("not connect camera");
-  }
-  const handleScanWebCam = (result) => {
-    if (result){
-        setScanResultWebCam(result);
+    const handleErrorWebCam = (error) => {
+      alert("not connect camera");
     }
-  }
-  const renderQRscan = useMemo(() =>{
-    return(
-      <div className="flex flex-col justify-center items-center">
-        <QrButton onClick={() => {
-          if (window.innerWidth <= 768) {
-            return
-          }
-          setIsShown(current => !current);
-        }} />
-        {/* {isShown && <QrReader className="h-[120px]"     
-        />} */}
-
-        {isShown && <QrReader 
-          //  ref={qrRef}
+    const handleScanWebCam = (result) => {
+      if (result) {
+        setScanResultWebCam(result);
+        router.push(result?.text);
+      }
+    }
+    const renderQRscan = useMemo(() => {
+      return (
+        <div className="flex flex-col justify-center items-center">
+          <QrButton onClick={() => {
+            if (window.innerWidth > 768) {
+              return;
+            }
+            setIsShown(current => !current);
+          }} />
+  
+          {isShown && <QrReader
             delay={300}
-            style={{ width:'180px'}}
+            style={{ width: '180px' }}
+            constraints={{ audio: false, video: { facingMode: 'environment' } }}
             onError={handleErrorWebCam}
             onScan={handleScanWebCam}
-        />}
-        {/* {isShown && <BgBlueButton className="w-[200px]"  variant="contained" content="open file" onClick={onScanFile}/>} */}
-        {isShown && (
-        <div>
-        <h3> Scanned  Code: <a  href={scanResultWebCam}>{scanResultWebCam}</a></h3>
-        </div>)}
-      </div>  
-    )
-  },[handleClick,isShown])
+          />}
+  
+          {isShown && (
+            <div>
+              <h3> Scanned  Code: <a href={scanResultWebCam}>{scanResultWebCam}</a></h3>
+            </div>)}
+        </div>
+      )
+    }, [handleClick, isShown])
 
   return (
     <section className={`h-screen h-min-full w-screen mx-auto flex justify-center items-center ${BG_COLOR}`} >
