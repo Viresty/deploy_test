@@ -134,11 +134,12 @@ export default function LuckySpinAdmin() {
             if (dataset[2].exists()) {
                 const dataEventReward = [...Object.values(dataset[2].val())];
                 dataEventReward.sort(compare);
+                console.log(dataEventReward);
                 setRewardList(dataEventReward);
                 const remainRewardData = dataEventReward.filter((val) => (val.quantityRemain > 0))
                 setRemainRewardList(remainRewardData);
                 const rewardChosingId = remainRewardData[0].idReward;
-                console.log(rewardChosingId)
+                console.log(rewardChosingId);
                 update(ref(db, "event/" + EventID + "/playingData"), {rewardChosingId: rewardChosingId});
                 setIDRewardChosing(rewardChosingId);
             }
