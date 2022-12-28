@@ -18,13 +18,12 @@ import QrReader from 'react-qr-scanner'
 
 export default function Index() {
   const [pin, setPin] = useState("");
-  const [scanResultWebCam, setScanResultWebCam] = useState('');
+  const [scanResultWebCam, setScanResultWebCam] =  useState('');
   const [isShown, setIsShown] = useState(false);
 
   const message = usePopUpMessageHook();
   const status = usePopUpStatusHook()
   const visible = usePopUpVisibleHook();
-  const [QRdata, setQRData] = useState('No result');
 
   //Call dispatch from redux
   const dispatch = useDispatch();
@@ -58,7 +57,7 @@ export default function Index() {
           case 2:
             ShowMethod(dispatch, messagesSuccess.I0008(currEvent.title), true);
             setTimeout(() => {
-              router.push("/event/countdown-checkin/" + currEvent.eventId);
+              router.push("event/countdown-checkin/" + currEvent.eventId);
             }, 500);
             return
           case 3:
@@ -89,6 +88,10 @@ export default function Index() {
       var currEvent = values.find((item) => item.pinCode === pin);
       if (currEvent === undefined || currEvent.delFlag === true) {
         ShowMethod(dispatch, messagesError.E2004, false);
+        return;
+      }
+      if ( currEvent.maxTicket === currEvent.userJoined ) { 
+        ShowMethod(dispatch, messagesError.E2005, false);
         return;
       }
       dispatch(incognitoEvent(currEvent));
@@ -130,7 +133,7 @@ export default function Index() {
       <Input
         placeHolder="Mã pin"
         onChange={pinData}
-        type="text"
+        type="number"
         primaryColor={LEFT_COLOR}
         secondaryColor={RIGHT_COLOR}
         noContent={true}
@@ -199,138 +202,61 @@ export default function Index() {
     )
   }, [visible, status, message])
 
-  // if (playerCreatedById === userId
-  //   && eventUserPlayingId === eventParticipant
-  //   && statusEventPlayer === statusEventUser
-  //   && ownerEventUser !== ownerEventParticipant) {
-  //   get(child(ref(db), "event/")).then((snapshot) => {
-  //     const record = snapshot.val() ?? [];
-  //     const values = Object.values(record);
-  //     var currEvent = values.find((item) => item.eventId === eventUserPlayingId);
-  //     if (currEvent === undefined || currEvent.delFlag === true) {
-  //       ShowMethod(dispatch, messagesError.E2004, false);
-  //       return;
-  //     }
-  //     switch (currEvent.status) {
-  //       case 1:
-  //         dispatch(removePlayerState());
-  //         dispatch(removeUserPlaying());
-  //         ShowMethod(dispatch, messagesError.E3001, false);
-  //         return;
-  //       case 2:
-  //         ShowMethod(dispatch, messagesSuccess.I0008(currEvent.title), true);
-  //         setTimeout(() => {
-  //           router.push("event/countdown-checkin");
-  //         }, 500);
-  //         return
-  //       case 3:
-  //         dispatch(removePlayerState());
-  //         dispatch(removeUserPlaying());
-  //         ShowMethod(dispatch, messagesError.E3002, false);
-  //         return;
-  //       case 4:
-  //         dispatch(removePlayerState());
-  //         dispatch(removeUserPlaying());
-  //         ShowMethod(dispatch, messagesError.E3003, false);
-  //         return;
-  //       default:
-  //         return;
-  //     }
-  //   });
-  // } else if (ownerEventUser === ownerEventParticipant) {
-  //   get(child(ref(db), "event/")).then((snapshot) => {
-  //     const record = snapshot.val() ?? [];
-  //     const values = Object.values(record);
-  //     var currEvent = values.find((item) => item.eventId === userHostingEvent.eventId);
-  //     if (currEvent === undefined || currEvent.delFlag === true) {
-  //       ShowMethod(dispatch, messagesError.E2004, false);
-  //       return;
-  //     }
-  //     switch (currEvent.status) {
-  //       case 1:
-  //         setTimeout(() => {
-  //           router.push("/admin/event/event-detail");
-  //         }, 500);
-  //         return;
-  //       case 2:
-  //         setTimeout(() => {
-  //           router.push("/admin/countdown-checkin");
-  //         }, 500);
-  //         return
-  //       case 3:
-  //         setTimeout(() => {
-  //           router.push("/admin/luckyspin/" + currEvent.eventId);
-  //         }, 500);
-  //         return;
-  //       case 4:
-  //         dispatch(removePlayerState());
-  //         dispatch(removeUserHosting())
-  //         ShowMethod(dispatch, messagesError.E3003, false);
-  //         return;
-  //       default:
-  //         return;
-  //     }
-  //   });
-  // } else {
-
   const handleClick = event => {
     setIsShown(current => !current);
   };
+  
+    // const [scanResultFile, setScanResultFile] = useState('');
+    // const qrRef = useRef(null)
+  
+    //  const handleErrorFile = (error) => {
+    //      alert(error)
+    //   }
+    //   const  handleScanFile = (result) => {
+    //     if  (result) {
+    //        setScanResultFile(result)
+    //     }
+    //   }
+    // const onScanFile = () => {
+    //   if(qrRef && qrRef.current) qrRef.current.openImageDialog()
+    // }
 
-  // const [scanResultFile, setScanResultFile] = useState('');
-  // const qrRef = useRef(null)
-
-  //  const handleErrorFile = (error) => {
-  //      alert(error)
-  //   }
-  //   const  handleScanFile = (result) => {
-  //     if  (result) {
-  //        setScanResultFile(result)
-  //     }
-  //   }
-  // const onScanFile = () => {
-  //   if(qrRef && qrRef.current) qrRef.current.openImageDialog()
-  // }
-
-
+  
   const handleErrorWebCam = (error) => {
     alert("not connect camera");
   }
   const handleScanWebCam = (result) => {
-    if (result) {
-      setScanResultWebCam(result);
-      router.push(result?.text);
+    if (result){
+        setScanResultWebCam(result);
     }
   }
-  const renderQRscan = useMemo(() => {
-    return (
+  const renderQRscan = useMemo(() =>{
+    return(
       <div className="flex flex-col justify-center items-center">
         <QrButton onClick={() => {
-          if (window.innerWidth > 768) {
-            return;
+          if (window.innerWidth <= 768) {
+            return
           }
           setIsShown(current => !current);
         }} />
         {/* {isShown && <QrReader className="h-[120px]"     
         />} */}
 
-        {isShown && <QrReader
+        {isShown && <QrReader 
           //  ref={qrRef}
-          delay={300}
-          style={{ width: '180px' }}
-          constraints={{ audio: false, video: { facingMode: 'environment' } }}
-          onError={handleErrorWebCam}
-          onScan={handleScanWebCam}
+            delay={300}
+            style={{ width:'180px'}}
+            onError={handleErrorWebCam}
+            onScan={handleScanWebCam}
         />}
         {/* {isShown && <BgBlueButton className="w-[200px]"  variant="contained" content="open file" onClick={onScanFile}/>} */}
         {isShown && (
-          <div>
-            <h3> Scanned  Code: <a href={scanResultWebCam}>{scanResultWebCam}</a></h3>
-          </div>)}
-      </div>
+        <div>
+        <h3> Scanned  Code: <a  href={scanResultWebCam}>{scanResultWebCam}</a></h3>
+        </div>)}
+      </div>  
     )
-  }, [handleClick, isShown])
-
+  },[handleClick,isShown])
 
   return (
     <section className={`h-screen h-min-full w-screen mx-auto flex justify-center items-center ${BG_COLOR}`} >
@@ -346,5 +272,4 @@ export default function Index() {
       {renderPopUp}
     </section>
   );
-  // }
 }
