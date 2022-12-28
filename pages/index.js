@@ -318,7 +318,7 @@ export default function Index() {
           //  ref={qrRef}
           delay={300}
           style={{ width: '180px' }}
-          constraints={{ audio: false, video: { facingMode: "environmemnt" } }}
+          constraints={{ audio: false, video: { facingMode: 'environment' } }}
           onError={handleErrorWebCam}
           onScan={handleScanWebCam}
         />}
