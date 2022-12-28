@@ -9,7 +9,7 @@ import Button from "public/shared/Button";
 import router, { useRouter } from "next/router";
 
 import { useDispatch } from "react-redux";
-import { userEvent, incognitoEvent } from "public/redux/actions";
+import { userEvent, incognitoEvent, removePlayerState, removeUserPlaying } from "public/redux/actions";
 import { usePlayerParticipantHook } from "public/redux/hooks";
 // firebase
 import { auth, db } from "../../../src/firebase";
@@ -101,6 +101,14 @@ export default function LuckySpin() {
                     console.log('Not found player');
                     router.push('/');
                 };
+                // dataEventParticipant.forEach((val, idx) => {
+                //     val.ID = Object.keys(rawData)[idx];
+                //     get(child(ref(db), "users/" + val.createBy)).then((snapshot) => {
+                //         if (snapshot.exists()) {
+                //             val.pic = snapshot.val().pic;
+                //         }
+                //     })
+                // })
                 const online = dataEventParticipant.filter(val => val.status === 1).length;
                 const filted = dataEventParticipant.filter(val => (val.idReward === "" && val.status === 1));
                 setPlayerList(rawData);
@@ -372,7 +380,12 @@ export default function LuckySpin() {
         return <OverlayBlock childDiv={<>
             <p className="text-[#004599] text-xl text-center w-full font-bold">Bạn có chắc chắn muốn <br /><span className="text-[#FF6262] uppercase">thoát</span>?</p>
             <div className="mt-2 w-full flex gap-4 px-2">
-                <Button fontSize={"20px"} content={"THOÁT"} primaryColor={"#FF6262"} isSquare={true} marginY={0} onClick={() => { router.push('/') }} />
+                <Button fontSize={"20px"} content={"THOÁT"} primaryColor={"#FF6262"} isSquare={true} marginY={0}
+                    onClick={() => {
+                        dispatch(removePlayerState);
+                        dispatch(removeUserPlaying); 
+                        router.push('/'); 
+                    }} />
                 <Button fontSize={"20px"} content={"HỦY"} primaryColor={"#3B88C3"} isSquare={true} marginY={0} onClick={() => { document.getElementById("exitOverlay").classList.toggle('hidden') }} />
             </div>
         </>} id={"exitOverlay"}></OverlayBlock>
