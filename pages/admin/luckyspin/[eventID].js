@@ -226,7 +226,7 @@ export default function LuckySpinAdmin() {
         updateFB('event/' + EventID + '/playingData', { confirmStatus: -1 });
         // Random đối tượng
         const randomNum = Math.floor(Math.random() * (remainPlayerList.length));
-        setSpinningFB(true, randomNum, remainPlayerList[randomNum].ID);
+        setSpinningFB(true, randomNum, remainPlayerList[randomNum].participantId);
         setAwardedIdx(randomNum);
         Array.from({ length: 9 }, (_, index) => index).forEach(idx => {
             document.getElementById("spin-idx-" + idx).classList.add("animate-move-down-" + idx)
