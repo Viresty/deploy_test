@@ -132,7 +132,7 @@ export default function LuckySpinAdmin() {
             }
             // Event Reward
             if (dataset[2].exists()) {
-                const dataEventReward = Object.values(dataset[2].val());
+                const dataEventReward = [...Object.values(dataset[2].val())];
                 dataEventReward.sort(compare);
                 setRewardList(dataEventReward);
                 const remainRewardData = dataEventReward.filter((val) => (val.quantityRemain > 0))
